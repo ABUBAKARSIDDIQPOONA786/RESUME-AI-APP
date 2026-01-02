@@ -1,29 +1,36 @@
-import { useState } from "react";
-import { analyzeResume } from "../api";
+import axios from "axios";
 
 export default function ResumeUpload({ setResult }) {
-  const [file, setFile] = useState(null);
-  const [role, setRole] = useState("Data Analyst");
+  const [uploading, setUploading] = useState(false);
 
-  const handleSubmit = async () => {
+  const handleFile = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setUploading(true);
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("target_role", role);
 
-    const res = await analyzeResume(formData);
-    setResult(res.data);
+    try {
+      // 2026 Live Backend URL
+      const response = await axios.post(
+        "resume-ai-app-2.onrender.com", 
+        formData
+      );
+      setResult(response.data);
+    } catch (err) {
+      alert("Error: Check if the backend is awake or file is too large.");
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
-    <div>
-      <h2>Upload Resume</h2>
-      <input type="file" onChange={e => setFile(e.target.files[0])} />
-      <select onChange={e => setRole(e.target.value)}>
-        <option>Data Analyst</option>
-        <option>Software Engineer</option>
-        <option>Product Manager</option>
-      </select>
-      <button onClick={handleSubmit}>Analyze</button>
+    <div className="upload-box">
+      <input type="file" onChange={handleFile} id="fileInput" hidden />
+      <button onClick={() => document.getElementById('fileInput').click()}>
+        {uploading ? "Analyzing Resume..." : "Upload Resume (PDF/DOCX)"}
+      </button>
     </div>
   );
 }
