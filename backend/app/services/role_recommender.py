@@ -1,20 +1,24 @@
-from ..data.roles import ROLE_SKILL_PROFILES
-from ..services.skill_extractor import extract_skills
-
-def recommend_roles(resume_text: str):
-    resume_skills = extract_skills(resume_text)
+def recommend_roles(text: str) -> list:
+    text_lower = text.lower()
     recommendations = []
-
-    for role, role_skills in ROLE_SKILL_PROFILES.items():
-        matched = set(resume_skills).intersection(set(role_skills))
-        score = (len(matched) / len(role_skills)) * 100
-
-        recommendations.append({
-            "role": role,
-            "match_score": round(score, 2),
-            "matched_skills": list(matched),
-            "missing_skills": list(set(role_skills) - matched)
-        })
-
-    recommendations.sort(key=lambda x: x["match_score"], reverse=True)
-    return recommendations
+    
+    # Role Profiles
+    PROFILES = {
+        "Data Scientist": ["python", "machine learning", "sql", "pytorch"],
+        "Full Stack Developer": ["react", "javascript", "fastapi", "sql"],
+        "Cloud Engineer": ["aws", "docker", "kubernetes", "terraform"],
+        "Product Manager": ["agile", "leadership", "project management"]
+    }
+    
+    for role, required in PROFILES.items():
+        match_count = len([s for s in required if s in text_lower])
+        match_score = int((match_count / len(required)) * 100)
+        
+        if match_score > 30: # Only suggest roles with >30% match
+            recommendations.append({
+                "title": role,
+                "match_score": match_score
+            })
+            
+    # Sort by highest match
+    return sorted(recommendations, key=lambda x: x['match_score'], reverse=True)
