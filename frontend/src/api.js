@@ -1,11 +1,11 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://resume-intelligence-api.onrender.com"
+  baseURL: "https://resume-ai-app-2.onrender.com" 
 });
 
 export const analyzeResume = (formData) =>
-  API.post("/resume/explain", formData, {
+  API.post("/resume/upload", formData, {
     headers: { "Content-Type": "multipart/form-data" }
   });
 
