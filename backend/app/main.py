@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import resume
+from .routers import resume
 import time
 
 # Initialize FastAPI App for 2026 Standards
