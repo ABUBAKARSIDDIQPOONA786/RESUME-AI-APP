@@ -1,24 +1,13 @@
 import pdfplumber
 from docx import Document
-from io import BytesIO
+import io
 
-def extract_text(file):
-    content = file.file.read()
-    
-    if file.filename.endswith(".pdf"):
-        return extract_pdf(content)
-    elif file.filename.endswith(".docx"):
-        return extract_docx(content)
-    else:
-        return ""
-
-def extract_pdf(content):
+async def extract_text(file_content: bytes, extension: str) -> str:
     text = ""
-    with pdfplumber.open(BytesIO(content)) as pdf:
-        for page in pdf.pages:
-            text += page.extract_text() or ""
+    if extension == ".pdf":
+        with pdfplumber.open(io.BytesIO(file_content)) as pdf:
+            text = "\n".join(page.extract_text() or "" for page in pdf.pages)
+    elif extension in [".docx", ".doc"]:
+        doc = Document(io.BytesIO(file_content))
+        text = "\n".join(para.text for para in doc.paragraphs)
     return text.strip()
-
-def extract_docx(content):
-    doc = Document(BytesIO(content))
-    return "\n".join([p.text for p in doc.paragraphs]).strip()
