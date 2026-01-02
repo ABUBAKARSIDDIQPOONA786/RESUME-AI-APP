@@ -1,6 +1,6 @@
-<<<<<<< HEAD
+
 import { Upload, FileText, Loader2 } from 'lucide-react';
-=======
+
 import axios from "axios";
 
 export default function ResumeUpload({ setResult }) {
@@ -53,13 +53,13 @@ export default function ResumeUpload({ onUpload, loading }) {
           disabled={loading}
         />
       </label>
-=======
+
     <div className="upload-box">
       <input type="file" onChange={handleFile} id="fileInput" hidden />
       <button onClick={() => document.getElementById('fileInput').click()}>
         {uploading ? "Analyzing Resume..." : "Upload Resume (PDF/DOCX)"}
       </button>
->>>>>>> 27955f9902d99cd5954861ba4381a6a4b038d34c
+
     </div>
   );
 }
