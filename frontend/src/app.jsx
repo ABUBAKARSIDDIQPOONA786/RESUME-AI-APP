@@ -1,25 +1,21 @@
-import { useState } from "react";
-import ResumeUpload from "./components/ResumeUpload";
-import ScoreCard from "./components/ScoreCard";
-import SkillsList from "./components/SkillsList";
-import ExplanationBox from "./components/ExplanationBox";
+import Navbar from './components/Navbar';
+import Dashboard from './pages/Dashboard';
 
 function App() {
-  const [result, setResult] = useState(null);
-
   return (
-    <div className="container">
-      <h1>AI Resume Intelligence Platform</h1>
-      <ResumeUpload setResult={setResult} />
+    <div className="min-h-screen bg-slate-950 text-slate-50 selection:bg-blue-500/30">
+      {/* Global Navigation */}
+      <Navbar />
+      
+      {/* Main Page Content */}
+      <main>
+        <Dashboard />
+      </main>
 
-      {result && (
-        <>
-          <ScoreCard score={result.ats_score} />
-          <SkillsList title="Matched Skills" skills={result.matched_skills} />
-          <SkillsList title="Missing Skills" skills={result.improvement_suggestions} />
-          <ExplanationBox text={result.explanation} />
-        </>
-      )}
+      {/* Simple Footer */}
+      <footer className="py-12 border-t border-slate-900 text-center text-slate-600 text-sm">
+        &copy; 2026 Resume.AI Platform • Built with Agentic AI logic
+      </footer>
     </div>
   );
 }

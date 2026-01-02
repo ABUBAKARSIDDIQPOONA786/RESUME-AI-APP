@@ -1,12 +1,12 @@
 from fastapi import APIRouter, UploadFile, File, Form
 import re
 
-from app.services.text_extractor import extract_text
-from app.services.skill_extractor import extract_skills
-from app.services.resume_structurer import structure_resume
-from app.services.ats_score import calculate_ats_score
-from app.services.ai_explainer import generate_explanation
-from app.services.role_recommender import recommend_roles
+from ..services.parser import extract_text
+from ..services.skill_extractor import extract_skills
+from ..services.resume_structurer import structure_resume
+from ..services.ats_score import calculate_ats_score
+from ..services.ai_explainer import generate_explanation
+from ..services.role_recommender import recommend_roles
 
 router = APIRouter(prefix="/resume", tags=["Resume Analysis"])
 

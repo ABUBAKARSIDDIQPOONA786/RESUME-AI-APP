@@ -1,7 +1,11 @@
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routes import resume
+try:
+    from app.routers import resume
+except ImportError:
+    from .routers import resume
+
 
 app = FastAPI(title="AI Resume Intelligence")
 
