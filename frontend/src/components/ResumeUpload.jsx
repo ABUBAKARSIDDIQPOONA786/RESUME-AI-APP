@@ -27,11 +27,11 @@ export default function ResumeUpload({ setResult }) {
       setUploading(false);
     }
   };
->>>>>>> 27955f9902d99cd5954861ba4381a6a4b038d34c
+
 
 export default function ResumeUpload({ onUpload, loading }) {
   return (
-<<<<<<< HEAD
+
     <div className="w-full max-w-xl mx-auto">
       <label className="group relative flex flex-col items-center justify-center w-full h-56 border-2 border-slate-800 border-dashed rounded-[2rem] cursor-pointer bg-slate-900/40 hover:bg-slate-900 hover:border-blue-500/50 transition-all duration-500">
         <div className="flex flex-col items-center justify-center space-y-4">
