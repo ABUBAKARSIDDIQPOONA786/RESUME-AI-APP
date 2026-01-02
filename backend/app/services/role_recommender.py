@@ -1,5 +1,5 @@
-from app.data.roles import ROLE_SKILL_PROFILES
-from app.services.skill_extractor import extract_skills
+from ..data.roles import ROLE_SKILL_PROFILES
+from ..services.skill_extractor import extract_skills
 
 def recommend_roles(resume_text: str):
     resume_skills = extract_skills(resume_text)
