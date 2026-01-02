@@ -1,34 +1,51 @@
-from app.services.ats_score import calculate_ats_score
+def map_roles_to_resume(text: str) -> list:
+    
+    text_lower = text.lower()
+    
+    # 2026 Role-Skill Matrix
+    JOB_PROFILES = {
+        "AI/ML Engineer": {
+            "required": ["python", "pytorch", "tensorflow", "scikit-learn", "llm", "pandas"],
+            "weight": 1.2
+        },
+        "Full Stack Developer": {
+            "required": ["react", "node.js", "typescript", "fastapi", "postgresql", "tailwind"],
+            "weight": 1.0
+        },
+        "Cloud Solutions Architect": {
+            "required": ["aws", "azure", "docker", "kubernetes", "terraform", "ci/cd"],
+            "weight": 1.1
+        },
+        "Data Analyst": {
+            "required": ["sql", "power bi", "tableau", "excel", "python", "statistics"],
+            "weight": 0.9
+        },
+        "Product Manager": {
+            "required": ["agile", "scrum", "roadmap", "stakeholder", "product lifecycle", "jira"],
+            "weight": 1.0
+        }
+    }
 
-ROLE_SKILL_MAP = {
-    "Data Analyst": [
-        "sql", "excel", "python", "power bi", "tableau", "statistics"
-    ],
-    "Machine Learning Engineer": [
-        "python", "machine learning", "tensorflow", "pytorch", "model"
-    ],
-    "Backend Developer": [
-        "python", "java", "api", "database", "fastapi", "flask"
-    ],
-    "Software Engineer": [
-        "data structures", "algorithms", "python", "java", "git"
-    ],
-    "Business Analyst": [
-        "excel", "powerpoint", "sql", "requirements", "stakeholders"
-    ]
-}
+    recommendations = []
 
-def recommend_roles(resume_text: str, top_n: int = 3):
-    role_scores = []
+    for role, criteria in JOB_PROFILES.items():
+        required_skills = criteria["required"]
+        # Calculate how many key skills from this profile are in the resume
+        matches = [skill for skill in required_skills if skill in text_lower]
+        
+        if len(matches) > 0:
+            # Base score = (matched / total) * 100
+            base_score = (len(matches) / len(required_skills)) * 100
+            
+            # Apply 2026 Market Demand Weight
+            final_score = min(int(base_score * criteria["weight"]), 100)
 
-    for role in ROLE_SKILL_MAP.keys():
-        ats_result = calculate_ats_score(resume_text, role)
-        role_scores.append({
-            "role": role,
-            "match_score": ats_result["ats_score"],
-            "matched_keywords": ats_result["matched_keywords"]
-        })
+            # Only recommend if match is meaningful (e.g., > 25%)
+            if final_score > 25:
+                recommendations.append({
+                    "title": role,
+                    "match_score": final_score
+                })
 
-    role_scores.sort(key=lambda x: x["match_score"], reverse=True)
-
-    return role_scores[:top_n]
+    # Sort by highest match score
+    return sorted(recommendations, key=lambda x: x["match_score"], reverse=True)
