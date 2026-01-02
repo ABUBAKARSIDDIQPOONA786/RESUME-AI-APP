@@ -1,4 +1,4 @@
-import { MessageSquareText, Info } from 'lucide-react';
+import { MessageSquare, Info } from 'lucide-react';
 
 export default function ExplanationBox({ text }) {
   return (
@@ -6,7 +6,7 @@ export default function ExplanationBox({ text }) {
       {/* Header */}
       <div className="bg-slate-800/50 px-6 py-4 border-b border-slate-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <MessageSquareText className="w-5 h-5 text-blue-400" />
+          <MessageSquare className="w-5 h-5 text-blue-400" />
           <span className="text-sm font-bold uppercase tracking-wider text-slate-300">AI Feedback</span>
         </div>
         <Info className="w-4 h-4 text-slate-500 cursor-help" />
