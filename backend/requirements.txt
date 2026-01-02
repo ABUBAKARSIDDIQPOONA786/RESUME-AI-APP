@@ -3,3 +3,6 @@ uvicorn
 pdfplumber
 python-docx
 python-multipart
+langchain==0.3.*
+langchain-openai==0.2.*
+openai==1.*
