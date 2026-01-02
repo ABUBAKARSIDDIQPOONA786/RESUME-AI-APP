@@ -1,29 +1,36 @@
-def calculate_ats_score(resume_text: str, target_role: str):
-    resume_text = resume_text.lower()
-    skills_found = extract_skills(resume_text)
-    role_skills = ROLE_KEYWORDS.get(target_role, [])
+from .skill_extractor import extract_skills
 
-    matched = list(set(skills_found).intersection(set(role_skills)))
-    missing = list(set(role_skills) - set(skills_found))
+def calculate_ats_score(text: str, target_role: str = "General"):
+    matched_skills = extract_skills(text)
+    
+    # 2026 Scoring Weights
+    score = 0
+    text_lower = text.lower()
+    
+    # 1. Skill Match (50 points)
+    score += min(len(matched_skills) * 8, 50)
+    
+    # 2. Section Headers (30 points)
+    headers = ["experience", "education", "projects", "skills", "summary"]
+    found_headers = [h for h in headers if h in text_lower]
+    score += (len(found_headers) / len(headers)) * 30
+    
+    # 3. Quantifiable Impact (20 points)
+    # 2026 ATS look for metrics (%, $, numbers)
+    if re.search(r'\d+%', text) or re.search(r'\$\d+', text):
+        score += 20
 
-    keyword_score = (len(matched) / len(role_skills)) * 40 if role_skills else 0
-    experience_score = 20 if re.search(r"\b\d+\+?\s+years\b", resume_text) else 10
-    education_score = 10 if any(deg in resume_text for deg in ["b.tech", "bachelor", "master", "m.tech"]) else 5
-    formatting_score = 10 if len(skills_found) >= 5 else 5
-
-    total_score = min(
-        keyword_score + experience_score + education_score + formatting_score,
-        100
-    )
+    # Define missing skills for improvement
+    all_needed = ["python", "sql", "aws", "docker"] # Example subset
+    missing = [s for s in all_needed if s not in matched_skills]
 
     return {
-        "ats_score": round(total_score, 2),
-        "matched_skills": matched,
+        "ats_score": int(score),
+        "matched_skills": matched_skills,
         "missing_skills": missing,
         "breakdown": {
-            "skills_match": round(keyword_score, 2),
-            "experience": experience_score,
-            "education": education_score,
-            "formatting": formatting_score
+            "skills": min(len(matched_skills) * 8, 50),
+            "structure": (len(found_headers) / len(headers)) * 30,
+            "impact": 20 if (re.search(r'\d+%', text) or re.search(r'\$\d+', text)) else 0
         }
     }
