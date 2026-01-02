@@ -5,10 +5,17 @@ try:
     from app.routers import resume
 except ImportError:
     from .routers import resume
+<<<<<<< HEAD
 
+=======
+>>>>>>> 27955f9902d99cd5954861ba4381a6a4b038d34c
 
 app = FastAPI(title="AI Resume Intelligence")
 
+@app.get("/")
+async def root():
+    return {"status": "online", "message": "Resume AI Backend is running. Visit /docs for API testing."}
+    
 # ---- CORS ----
 app.add_middleware(
     CORSMiddleware,
