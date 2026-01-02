@@ -1,4 +1,5 @@
-import { Upload, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { Upload, Loader2, FileText } from 'lucide-react';
 
 export default function ResumeUpload({ onUpload, loading }) {
   return (
@@ -22,7 +23,7 @@ export default function ResumeUpload({ onUpload, loading }) {
         <input 
           type="file" 
           className="hidden" 
-          onChange={(e) => onUpload(e.target.files[0])} 
+          onChange={(e) => onUpload(e.target.files)} 
           accept=".pdf,.docx" 
           disabled={loading}
         />
