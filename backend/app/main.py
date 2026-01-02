@@ -8,6 +8,10 @@ except ImportError:
 
 app = FastAPI(title="AI Resume Intelligence")
 
+@app.get("/")
+async def root():
+    return {"status": "online", "message": "Resume AI Backend is running. Visit /docs for API testing."}
+    
 # ---- CORS ----
 app.add_middleware(
     CORSMiddleware,
