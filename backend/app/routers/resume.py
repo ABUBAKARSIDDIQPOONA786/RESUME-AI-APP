@@ -1,7 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, Form
 import re
 
-from ..services.text_extractor import extract_text
+from ..services.parser import extract_text
 from ..services.skill_extractor import extract_skills
 from ..services.resume_structurer import structure_resume
 from ..services.ats_score import calculate_ats_score
