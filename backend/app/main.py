@@ -10,7 +10,8 @@ app.add_middleware(
         "http://localhost:5173",
         "https://resume-ai-app.vercel.app",
         "https://resume-ai-app-git-main-poona-abubakar-siddiqs-projects.vercel.app",
-        "https://resume-ai-9imxo6bns-poona-abubakar-siddiqs-projects.vercel.app"
+        "https://resume-ai-9imxo6bns-poona-abubakar-siddiqs-projects.vercel.app",
+        "https://resume-ai-96k0c5rx9-poona-abubakar-siddiqs-projects.vercel.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
