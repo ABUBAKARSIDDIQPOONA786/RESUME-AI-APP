@@ -1,33 +1,54 @@
-import { useState } from 'react';
-import { Upload, Loader2, FileText } from 'lucide-react';
+import { useState } from "react";
+import api from "../api/client";
 
-export default function ResumeUpload({ onUpload, loading }) {
+export default function ResumeUpload({ onResult }) {
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const submit = async () => {
+    if (!file) return setError("Please upload a resume.");
+
+    setLoading(true);
+    setError("");
+
+    const form = new FormData();
+    form.append("file", file);
+
+    try {
+      const res = await api.post("/resume/upload", form);
+      onResult(res.data);
+    } catch {
+      setError("Analysis failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="w-full max-w-xl mx-auto">
-      <label className="group relative flex flex-col items-center justify-center w-full h-56 border-2 border-slate-800 border-dashed rounded-[2rem] cursor-pointer bg-slate-900/40 hover:bg-slate-900 hover:border-blue-500/50 transition-all duration-500">
-        <div className="flex flex-col items-center justify-center space-y-4">
-          <div className="p-4 bg-slate-800 rounded-2xl group-hover:scale-110 transition-transform duration-500">
-            {loading ? (
-              <Loader2 className="w-10 h-10 text-blue-400 animate-spin" />
-            ) : (
-              <Upload className="w-10 h-10 text-blue-400" />
-            )}
-          </div>
-          <div className="text-center">
-            <p className="text-xl font-bold text-slate-200">
-              {loading ? "AI is processing..." : "Upload Resume"}
-            </p>
-            <p className="text-sm text-slate-500 mt-1">PDF or DOCX accepted (Max 5MB)</p>
-          </div>
-        </div>
-        <input 
-          type="file" 
-          className="hidden" 
-          onChange={(e) => onUpload(e.target.files)} 
-          accept=".pdf,.docx" 
-          disabled={loading}
+    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 space-y-6 shadow-xl">
+      <label className="flex flex-col items-center justify-center border-2 border-dashed border-slate-700 rounded-xl p-8 cursor-pointer hover:border-indigo-500 transition">
+        <p className="text-slate-300 font-medium">Upload Resume</p>
+        <p className="text-xs text-slate-500 mt-1">
+          PDF or DOCX • Max 5MB
+        </p>
+        <input
+          type="file"
+          accept=".pdf,.doc,.docx"
+          className="hidden"
+          onChange={(e) => setFile(e.target.files[0])}
         />
       </label>
+
+      <button
+        onClick={submit}
+        disabled={loading}
+        className="w-full bg-indigo-600 hover:bg-indigo-700 py-3 rounded-xl font-semibold disabled:opacity-50"
+      >
+        {loading ? "Analyzing with Agentic AI..." : "Analyze Resume"}
+      </button>
+
+      {error && <p className="text-red-400 text-sm">{error}</p>}
     </div>
   );
 }
