@@ -1,8 +1,17 @@
-import axios from "axios";
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  timeout: 30000,
-});
+const analyzeResume = async (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
 
-export default api;
+  const response = await fetch(`${API_BASE}/analyze-resume`, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error("Resume analysis failed");
+  }
+
+  return await response.json();
+};
