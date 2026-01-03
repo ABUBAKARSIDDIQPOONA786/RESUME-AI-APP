@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers import resume
+from ..routers import resume
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Resume.AI")
