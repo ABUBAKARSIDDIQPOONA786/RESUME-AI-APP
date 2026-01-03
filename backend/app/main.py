@@ -14,7 +14,8 @@ app = FastAPI(
 # Replace ["*"] with your specific Vercel/Netlify URL in production
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  
+    allow_origins=["http://localhost:5173",
+                   "https://resume-ai-app-chi.vercel.app/"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
