@@ -1,25 +1,17 @@
-import io
-from PyPDF2 import PdfReader
-import docx
+import pdfplumber
+from docx import Document
 
-def parse_resume(file):
-    content = file.file.read()
-    filename = file.filename.lower()
+def parse_resume(file_path: str) -> str:
+    if file_path.endswith(".pdf"):
+        text = ""
+        with pdfplumber.open(file_path) as pdf:
+            for page in pdf.pages:
+                text += page.extract_text() or ""
+        return text.strip()
 
-    try:
-        if filename.endswith(".pdf"):
-            reader = PdfReader(io.BytesIO(content))
-            return "\n".join(
-                page.extract_text() or "" for page in reader.pages
-            )
+    elif file_path.endswith(".docx"):
+        doc = Document(file_path)
+        return "\n".join(p.text for p in doc.paragraphs)
 
-        elif filename.endswith(".docx"):
-            doc = docx.Document(io.BytesIO(content))
-            return "\n".join(p.text for p in doc.paragraphs)
-
-        else:
-            raise ValueError("Unsupported file format")
-
-    except Exception as e:
-        print("❌ Parsing error:", e)
-        return ""
+    else:
+        raise ValueError("Unsupported file type")
