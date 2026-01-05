@@ -1,9 +1,8 @@
 fastapi
 uvicorn
+python-multipart
 pdfplumber
 python-docx
-python-multipart
-PyPDF2==3.0.1
-langchain==0.3.*
-langchain-openai==0.2.*
-openai==1.*
+pydantic
+langchain
+openai
