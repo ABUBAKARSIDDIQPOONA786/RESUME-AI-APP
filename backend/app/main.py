@@ -34,3 +34,8 @@ app.include_router(resume.router)
 @app.get("/")
 def health():
     return {"status": "API running"}
+
+@app.get("/")
+def health():
+    return {"status": "ok"}
+
