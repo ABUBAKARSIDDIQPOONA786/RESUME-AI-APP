@@ -1,13 +1,10 @@
 services:
   - type: web
-    name: resume-intelligence-api
+    name: resume-ai-api
     runtime: python
     plan: free
-
-    buildCommand: pip install -r backend/requirements.txt
-
-    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port 10000
-
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 10000
     envVars:
       - key: PYTHONPATH
         value: backend
